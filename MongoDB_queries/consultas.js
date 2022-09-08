@@ -8,7 +8,7 @@ db.restaurants.find({borough:"Bronx"},{name:1,_id:0});
 db.restaurants.find({borough:"Bronx"},{name:1,_id:0}).limit(5);
 db.restaurants.find({borough:"Bronx"},{name:1,_id:0}).limit(5).skip(5);
 db.restaurants.find({'grades.score':{$gt:90}},{name:1,_id:0});
-db.restaurants.find({'grades.score':{$gt:80, $lt: 100}},{name:1,_id:0});
+db.restaurants.find({grades:{$elemMatch:{'score':{$gt:80,$lt:100}}}});
 db.restaurants.find({'address.coord.0':{$lt: -95.754168}},{name:1,_id:0});
 db.restaurants.find({$and:[{cuisine:{$ne:'American'},'grades.score':{$gt:70},'address.coord.0':{$lt:-65.754168}}]},{name:1,_id:0});
 db.restaurants.find({cuisine:{$ne:'American'},'grades.score':{$gt:70},'address.coord.0':{$lt:-65.754168}},{name:1,_id:0});
@@ -27,7 +27,7 @@ db.restaurants.find({$and:[{'address.coord.1':{$gt:42}},{'address.coord.1':{$lt:
 db.restaurants.find({}).sort({name:1});
 db.restaurants.find({}).sort({name:-1});
 db.restaurants.find({}).sort({cuisine:1},{borough:-1}).forEach(function(x){print(`${x.cuisine} - ${x.borough} - ${x.name}}`)});
-db.restaurants.find({'address.street':{$exists:null}}) /*devuelve los que NO 'street' en 'address' */ db.restaurants.find({'address.street':{$ne:null}}) //devuelve los que SI tienen 'street' en 'address'
+db.restaurants.find({'address.street':{$exists:null}}); /*devuelve los que NO 'street' en 'address' */ db.restaurants.find({'address.street':{$ne:null}}) //devuelve los que SI tienen 'street' en 'address'
 db.restaurants.find({'address.coord':{$type:'double'}});
 db.restaurants.find({'grades.score':{$mod:[7,0]}}).forEach(function(x){print(`${x.name} - ${x.restaurant_id} - ${x.grades.map(x=>{return x.grade})}`)});
 db.restaurants.find({name:{$regex:/mon/}}).forEach(function(x){print(`${x.name} - ${x.borough} - ${x.address.coord} - ${x.cuisine}`)});
